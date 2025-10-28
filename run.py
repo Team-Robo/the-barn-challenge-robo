@@ -31,7 +31,7 @@ if __name__ == "__main__":
     parser.add_argument('--world_idx', type=int, default=0)
     parser.add_argument('--gui', action="store_true")
     parser.add_argument('--out', type=str, default=None)
-    parser.add_argument('--launch', type=str, default="move_base_DWA.launch")
+    parser.add_argument('--launch', type=str, default="move_base_teb.launch")
     parser.add_argument('--rviz', action='store_true', help="Launch RViz")
     parser.add_argument('--rviz_config', type=str, default="common.rviz")
 
