@@ -1,28 +1,12 @@
-# THIS FORKED REPO ADDED EXTRA FEATURES TO ORIGINAL BARN CHALLENGE REPO
-[check out extra features](#extra-features)
+### ***Navigation Stack Test Result:*** 
+upload your benchmark result [here](https://entuedu-my.sharepoint.com/:x:/r/personal/ongd0017_e_ntu_edu_sg/_layouts/15/Doc.aspx?sourcedoc=%7B6FAD4274-1E4D-4E65-AC25-B05687519509%7D&file=Nav%20Stack%20Test%20Result.xlsx&action=default&mobileredirect=true)
 
-[navigation stack test result](#navigation-stack-test-result)
-
-## Content of extra features
-- [Rviz](#rviz)
-- [New test script](#more-flexible-test-script-and-more-detailed-test-report)
-- [Playground](#playground)
-- [Move base's TEB and MPC installation guide](#move_base-teb--mpc-local-planner-plugin)
-
---------------------------------------------------------------------------------
-# Navigation Stack Test Result
-
-> NOTE: `Avg Time` only calculate for success run. All the values with parenthesis is for DynaBarn world 
-
-|                  | DWA        | fast DWA   | eband      | lfh        | mlda 2025 barn | D* Lite + Eband | DDP       | D* Lite + DDP | Hybrid A* + DDP |
-|------------------|------------|------------|------------|------------|----------------|-----------------|-----------|---------------|-----------------|
-| No of worlds     | 34(6)      | 34(6)      | 34(6)      | 34(6)      | 34(6)          | 34(6)           | 34(6)     | 14(6)         | 34(6)           |
-| No of tests      | 170(30)    | 170(30)    | 170(30)    | 170(30)    | 170(30)        | 170(30)         | 170(30)   | 69(30)        | 170(30)         |
-| Avg Time         | 31.9299(0) | 25.4210(0) | 16.9837(0) | 17.7158(0) | 7.8488(0)      | 29.5873(36.776) | 11.5492(0)| 8.5060(33.788)| 12.0876(0)      |
-| Avg Metric       | 0.1702(0)  | 0.2178(0)  | 0.3008(0)  | 0.3111(0)  | 0.4676(0)      | 0.0899(0.0083)  | 0.4553(0) | 0.4154(0.0042)| 0.4366(0)       |
-| Avg Success      | 0.8529(0)  | 0.7824(0)  | 0.8941(0)  | 0.8588(0)  | 0.9353(0)      | 0.3882(0.0667)  | 1(0)      | 0.8429(0.0333)| 0.9824(0)       |
-| Avg Collision    | 0.0647(0)  | 0.1412(0)  | 0.0529(0)  | 0.1353(0)  | 0.0588(0.3333) | 0.2118(0.9)     | 0(0)      | 0.0286(0.9)   | 0.0118(0)       | 
-| Avg Timeout      | 0.0824(1)  | 0.0765(0)  | 0.0529(1)  | 0.0059(1)  | 0.0059(0.6667) | 0.4(0.0333)     | 0(1)      | 0.1286(0.0667)| 0.0059(0)       |
+## Table of Contents
+- [Installation](#installation)
+- [Features](#features)
+  - [rviz](#rviz)
+  - [test script](#test-script)
+  - [playground](#playground)
 
 --------------------------------------------------------------------------------
 <p align="center">
@@ -32,11 +16,11 @@
 --------------------------------------------------------------------------------
 
 # ICRA BARN Navigation Challenge
-
-## Updates:
-* 02/04/2024: Adding 60 [DynaBARN](https://github.com/aninair1905/DynaBARN) environments. DynaBARN environments can be accessed by world indexes from 300-359.
+ICRA BARN Navigation Challenge simulation worlds, testing scripts and baseline navigation stack (e.g. DWA, Eband). World Index 0 - 299 are static world, world index 300 - 359 are dynamic world (DynaBarn).
 
 ## Requirements
+> ⚠️ Please use ROS melodic as ROS noetic is not working for DynaBarn. Replace `<YOUR_ROS_VERSION>` below to `melodic`
+
 If you run it on a local machine without containers:
 * ROS version at least Kinetic
 * CMake version at least 3.0.2
@@ -52,7 +36,7 @@ The requirements above are just suggestions. If you run into any issue, please c
 ## Installation
 Follow the instructions below to run simulations on your local machines. (You can skip 1-6 if you only use Singularity container)
 
-1. Create a virtual environment (we show examples with python venv, you can use conda instead)
+1. Optionally, create a virtual environment (we show examples with python venv, you can use conda instead)
 ```
 apt -y update; apt-get -y install python3-venv
 python3 -m venv /<YOUR_HOME_DIR>/nav_challenge
@@ -72,7 +56,7 @@ cd /<YOUR_HOME_DIR>/jackal_ws/src
 
 4. Clone this repo and required ros packages: (replace `<YOUR_ROS_VERSION>` with your own, e.g. melodic)
 ```
-git clone https://github.com/Daffan/the-barn-challenge.git
+git clone https://github.com/Team-Robo/the-barn-challenge-robo.git
 git clone https://github.com/jackal/jackal.git --branch <YOUR_ROS_VERSION>-devel
 git clone https://github.com/jackal/jackal_simulator.git --branch <YOUR_ROS_VERSION>-devel
 git clone https://github.com/jackal/jackal_desktop.git --branch <YOUR_ROS_VERSION>-devel
@@ -83,7 +67,7 @@ git clone https://github.com/utexas-bwi/eband_local_planner.git
 ```
 cd ..
 source /opt/ros/<YOUR_ROS_VERSION>/setup.bash
-rosdep init; rosdep update
+rosdep init; rosdep update --rosdistro <YOUR_ROS_VERSION>
 rosdep install -y --from-paths . --ignore-src --rosdistro=<YOUR_ROS_VERSION>
 ```
 
@@ -152,9 +136,7 @@ Except for `DWA`, we also provide three learning-based navigation stack as examp
 Submit a link that downloads your customized repository to this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSfZLMVluXE-HWnV9lNP00LuBi3e9HFOeLi30p9tsHUViWpqrA/viewform). Your navigation stack will be tested in the Singularity container on 50 hold-out BARN worlds sampled from the same distribution as the 300 BARN worlds. In the repository, make sure the `run.py` runs your navigation stack and `Singularityfile.def` installs all the dependencies of your repo. We suggest to actually build an image and test it with `./singularity_run.sh /path/to/image/file python3 run.py --world_idx 0`. You can also refer to branch `LfH`, `applr` and `e2e`, which are in the correct form for submissions.
 
 --------------------------------------------------------
-
-# Extra Features
-
+# Features
 ## Rviz
 Rviz config files for path planning visualization is under `jackal_helper/configs`.
 
@@ -165,7 +147,7 @@ python run.py --rviz --rviz_config eband.rviz
 
 > NOTE: default rviz_config file is `common.rviz` matching move_base DWA topic names, minimal edit is required if using other `move_base` plugins, more edit is required for using your own navigation stack developed outside of move_base
 
-## More flexible test script and more detailed test report
+## Test script
 
 `benchmark.sh` is a more customizable test script to the original `test.sh`
 
@@ -183,14 +165,13 @@ E.g.
 ```
 
 ### Test report
-`report_test.py` now report separate metrics for static and dynamic worlds.
+`report_test.py` report separate metrics for static and dynamic worlds.
 
 Report test for previous run logs, e.g. `move_base_DWA.launch.txt`
 ```
 python report_test.py --out_path move_base_DWA.launch.txt
 ```
-
-> I also added arguments for `run.py`, can check with `pyhton run.py -h`
+You can copy and paste your result into [navigation stack test result](#navigation-stack-test-result)
 
 ## Playground
 
@@ -211,26 +192,3 @@ Using `move_base` action server gui to send goal interactively
 ```
 rosrun actionlib axclient.py /move_base
 ```
-
-## `move_base` teb & mpc local planner plugin
-> NOTE: a fix is required to build mpc_local_planner, refers to https://github.com/rst-tu-dortmund/mpc_local_planner/pull/46
-
-Installation
-```
-cd ~/jackal_ws/src
-# teb
-git clone https://github.com/rst-tu-dortmund/teb_local_planner.git
-cd teb_local_planner
-git checkout melodic-devel
-# mpc
-cd ..
-git clone https://github.com/rst-tu-dortmund/mpc_local_planner.git
-cd mpc_local_planner
-git checkout melodic-devel
-# install dependencies and build
-cd ../..
-rosdep install teb_local_planner
-rosdep install mpc_local_planner
-catkin_make
-```
-
