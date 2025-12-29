@@ -7,6 +7,7 @@ SPACING=6
 REPEAT=10         # number of times to run each world
 MAX_IDX=359
 LAUNCH_FILES=()
+MONITOR=false     # resource monitoring flag
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -35,6 +36,10 @@ while [[ $# -gt 0 ]]; do
         shift
         shift
         ;;
+	--monitor)
+        MONITOR=true
+        shift
+        ;;
         *)
         echo "Unknown option: $1"
         shift
@@ -60,7 +65,11 @@ for LAUNCH in "${LAUNCH_FILES[@]}"; do
 
         for (( j=1; j<=REPEAT; j++ )); do
             echo "Running world index $n, test $j..."
-            python3 run.py --world_idx $n --launch "$LAUNCH"
+	    if [ "$MONITOR" = true ]; then
+    		python3 run.py --world_idx $n --launch "$LAUNCH" --monitor
+	    else
+    		python3 run.py --world_idx $n --launch "$LAUNCH"
+	    fi
             sleep 5
         done
     done

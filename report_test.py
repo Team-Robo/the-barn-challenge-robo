@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 import argparse
 from os.path import join
 
@@ -28,6 +28,10 @@ class NavLog(NamedTuple):
     timeout: bool
     time: float
     nav_metric: float
+    cpu_avg: Optional[float] = None
+    cpu_max: Optional[float] = None
+    mem_avg: Optional[float] = None
+    mem_max: Optional[float] = None
 
 def get_optimal_time(idx):
     if idx >= 300: # Dynabarn
@@ -58,49 +62,86 @@ if __name__ == "__main__":
             logs = l.split(" ")
             world_idx = int(logs[0])
             optimal_time = get_optimal_time(world_idx)
-            nav_log = NavLog(
-                world_idx,
-                bool(int(logs[1])),
-                bool(int(logs[2])),
-                bool(int(logs[3])),
-                float(logs[4]),
-                float(logs[5])
-            )
+            if len(logs) >= 14:  # full resource log
+                nav_log = NavLog(
+                    world_idx,
+                    bool(int(logs[1])),
+                    bool(int(logs[2])),
+                    bool(int(logs[3])),
+                    float(logs[4]),
+                    float(logs[5]),
+                    cpu_avg=float(logs[6]),
+                    cpu_max=float(logs[7]),
+                    mem_avg=float(logs[10]),
+                    mem_max=float(logs[11])
+                )
+            else:
+                nav_log = NavLog(
+                    world_idx,
+                    bool(int(logs[1])),
+                    bool(int(logs[2])),
+                    bool(int(logs[3])),
+                    float(logs[4]),
+                    float(logs[5])
+                )
             results[world_idx].append(nav_log)
 
-    mean_time_static = []
-    mean_time_dynamic = []
-    total_static_world = 0
-    total_dynamic_world = 0
-    total_static_test = 0
-    total_dynamic_test = 0
-    for k in results.keys():
-        mean_time_world = [nl.time for nl in results[k] if nl.succeeded]
-        if k < 300:
-            if len(mean_time_world) > 0:
-                mean_time_static.append(np.mean(mean_time_world))
-            total_static_world += 1
-            total_static_test += len(results[k])
-        else:
-            if len(mean_time_world) > 0:
-                mean_time_dynamic.append(np.mean(mean_time_world))
-            total_dynamic_world += 1
-            total_dynamic_test += len(results[k])
+    # Aggregation
+    def aggregate(result_dict, is_static=True):
+        keys = [k for k in result_dict.keys() if (k < 300) == is_static]
+        times = []
+        nav_metrics = []
+        successes = []
+        collisions = []
+        timeouts = []
+        cpu_avgs = []
+        cpu_maxs = []
+        mem_avgs = []
+        mem_maxs = []
+
+        for k in keys:
+            logs = result_dict[k]
+            times += [nl.time for nl in logs if nl.succeeded]
+            nav_metrics += [nl.nav_metric for nl in logs]
+            successes += [nl.succeeded for nl in logs]
+            collisions += [nl.collided for nl in logs]
+            timeouts += [nl.timeout for nl in logs]
+            cpu_avgs += [nl.cpu_avg for nl in logs if nl.cpu_avg is not None]
+            cpu_maxs += [nl.cpu_max for nl in logs if nl.cpu_max is not None]
+            mem_avgs += [nl.mem_avg for nl in logs if nl.mem_avg is not None]
+            mem_maxs += [nl.mem_max for nl in logs if nl.mem_max is not None]
+
+        return {
+            "avg_time": np.mean(times) if times else 0.0,
+            "avg_metric": np.mean(nav_metrics) if nav_metrics else 0.0,
+            "avg_success": np.mean(successes) if successes else 0.0,
+            "avg_collision": np.mean(collisions) if collisions else 0.0,
+            "avg_timeout": np.mean(timeouts) if timeouts else 0.0,
+            "cpu_avg": np.mean(cpu_avgs) if cpu_avgs else None,
+            "cpu_max": np.mean(cpu_maxs) if cpu_maxs else None,
+            "mem_avg": np.mean(mem_avgs) if mem_avgs else None,
+            "mem_max": np.mean(mem_maxs) if mem_maxs else None,
+            "num_worlds": len(keys),
+            "num_tests": sum(len(result_dict[k]) for k in keys)
+        }
+
+    static_stats = aggregate(results, is_static=True)
+    dynamic_stats = aggregate(results, is_static=False)
+
     print("==================================== STATIC RESULT ===========================================")
-    print(f"No of worlds: {total_static_world}, No of tests: {total_static_test}")
+    print(f"No of worlds: {static_stats['num_worlds']}, No of tests: {static_stats['num_tests']}")
     print("Avg Time: %.4f, Avg Metric: %.4f, Avg Success: %.4f, Avg Collision: %.4f, Avg Timeout: %.4f" %(
-        np.mean(mean_time_static) if mean_time_static else 0.0,
-        np.mean([np.mean([nl.nav_metric for nl in results[k]]) for k in results.keys() if k < 300]),
-        np.mean([np.mean([nl.succeeded for nl in results[k]]) for k in results.keys() if k < 300]),
-        np.mean([np.mean([nl.collided for nl in results[k]]) for k in results.keys() if k < 300]),
-        np.mean([np.mean([nl.timeout for nl in results[k]]) for k in results.keys() if k < 300]),
-    ))
+        static_stats['avg_time'], static_stats['avg_metric'], static_stats['avg_success'],
+        static_stats['avg_collision'], static_stats['avg_timeout']))
+    if static_stats['cpu_avg'] is not None:
+        print(f"Avg CPU: {static_stats['cpu_avg']:.2f}%, Max CPU: {static_stats['cpu_max']:.2f}%")
+        print(f"Avg MEM: {static_stats['mem_avg']:.3f} MB, Max MEM: {static_stats['mem_max']:.3f} MB")
+
     print("==================================== DYNAMIC RESULT ===========================================")
-    print(f"No of worlds: {total_dynamic_world}, No of tests: {total_dynamic_test}")
+    print(f"No of worlds: {dynamic_stats['num_worlds']}, No of tests: {dynamic_stats['num_tests']}")
     print("Avg Time: %.4f, Avg Metric: %.4f, Avg Success: %.4f, Avg Collision: %.4f, Avg Timeout: %.4f" %(
-        np.mean(mean_time_dynamic) if mean_time_dynamic else 0.0,
-        np.mean([np.mean([nl.nav_metric for nl in results[k]]) for k in results.keys() if k >= 300]),
-        np.mean([np.mean([nl.succeeded for nl in results[k]]) for k in results.keys() if k >= 300]),
-        np.mean([np.mean([nl.collided for nl in results[k]]) for k in results.keys() if k >= 300]),
-        np.mean([np.mean([nl.timeout for nl in results[k]]) for k in results.keys() if k >= 300]),
-    ))
+        dynamic_stats['avg_time'], dynamic_stats['avg_metric'], dynamic_stats['avg_success'],
+        dynamic_stats['avg_collision'], dynamic_stats['avg_timeout']))
+    if dynamic_stats['cpu_avg'] is not None:
+        print(f"Avg CPU: {dynamic_stats['cpu_avg']:.2f}%, Max CPU: {dynamic_stats['cpu_max']:.2f}%")
+        print(f"Avg MEM: {dynamic_stats['mem_avg']:.3f} MB, Max MEM: {dynamic_stats['mem_max']:.3f} MB")

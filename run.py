@@ -3,6 +3,8 @@ import argparse
 import subprocess
 import os
 from os.path import join
+import psutil
+import sys
 
 import numpy as np
 import rospy
@@ -26,14 +28,33 @@ def path_coord_to_gazebo_coord(x, y):
 
         return (gazebo_x, gazebo_y)
 
+def get_rosnode_pid(node_name):
+    try:
+        out = subprocess.check_output(
+            ['rosnode', 'info', node_name],
+            stderr=subprocess.DEVNULL
+        ).decode()
+        for line in out.splitlines():
+            if "Pid:" in line:
+                return int(line.split()[-1])
+    except Exception:
+        return None
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
-    parser.add_argument('--world_idx', type=int, default=0)
-    parser.add_argument('--gui', action="store_true")
-    parser.add_argument('--out', type=str, default=None)
-    parser.add_argument('--launch', type=str, default="move_base_DWA.launch")
-    parser.add_argument('--rviz', action='store_true', help="Launch RViz")
-    parser.add_argument('--rviz_config', type=str, default="common.rviz")
+    parser.add_argument('-w', '--world_idx', type=int, default=0, help="BARN world index to run navigation, default 0")
+    parser.add_argument('-g', '--gui', action="store_true", help="Enable Gazebo GUI")
+    parser.add_argument('-l', '--launch', type=str, default="move_base_DWA.launch", 
+                        help="Navigation stack launch file in jackal_helper/launch, default move_base_DWA.launch")
+    parser.add_argument('-o', '--out', type=str, default=None, 
+                        help="Path for output logs .txt file, default <--launch>.txt")
+    parser.add_argument('-r', '--rviz', action='store_true', help="Launch RViz")
+    parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz", 
+                        help="RViz config file in jackal_help/configs to be launched, default common.rviz")
+    parser.add_argument('-m', '--monitor', action='store_true', help="Enable resource usage (CPU & Memory) monitoring")
+    parser.add_argument('-mn', '--mnode', type=str, default="/move_base", 
+                        help="ROS node name to monitor resource usage, default /move_base")
 
     args = parser.parse_args()
 
@@ -112,6 +133,27 @@ if __name__ == "__main__":
         'roslaunch',
         launch_file,
     ])
+
+    def terminate_ros_proc():
+        gazebo_process.terminate()
+        gazebo_process.wait()
+        nav_stack_process.terminate()
+        nav_stack_process.wait()
+
+    if args.monitor:
+        move_base_pid = None
+        timeout_start_time = time.time()
+        while move_base_pid is None and not rospy.is_shutdown() and time.time() - timeout_start_time < 5:
+            move_base_pid = get_rosnode_pid(args.mnode)
+            time.sleep(0.5)
+        if move_base_pid is None:
+            print(f"Failed to find the pid of node: {args.mnode}, fallback to no resource usage monitoring")
+            args.monitor = False
+        else:
+            move_base_proc = psutil.Process(move_base_pid)
+            move_base_proc.cpu_percent(interval=None)  # warm-up
+            cpu_samples = []
+            mem_samples = []
     
     # Make sure your navigation stack recives the correct goal position defined in GOAL_POSITION
     import actionlib
@@ -151,15 +193,39 @@ if __name__ == "__main__":
     start_time = curr_time
     start_time_cpu = time.time()
     collided = False
+    if args.monitor:
+        last_sample_time = rospy.get_time()
+        cpu = mem = mem_percent = 0.0
     
     while compute_distance(goal_coor, curr_coor) > 1 and not collided and curr_time - start_time < 100:
-        curr_time = rospy.get_time()
-        pos = gazebo_sim.get_model_state().pose.position
-        curr_coor = (pos.x, pos.y)
-        print("Time: %.2f (s), x: %.2f (m), y: %.2f (m)" %(curr_time - start_time, *curr_coor), end="\r")
-        collided = gazebo_sim.get_hard_collision()
-        while rospy.get_time() - curr_time < 0.1:
-            time.sleep(0.01)
+        try:
+            curr_time = rospy.get_time()
+            pos = gazebo_sim.get_model_state().pose.position
+            curr_coor = (pos.x, pos.y)
+            if args.monitor: # resource monitoring in 2hz
+                if rospy.get_time() - last_sample_time >= 0.5:
+                    last_sample_time = rospy.get_time()
+                    cpu = move_base_proc.cpu_percent(interval=None)
+                    mem = move_base_proc.memory_info().rss / (1024 * 1024)
+                    mem_percent = move_base_proc.memory_percent()
+                    cpu_samples.append(cpu)
+                    mem_samples.append(mem)
+                print("Time: %.2f (s), x: %.2f (m), y: %.2f (m) | CPU: %.1f%% | MEM: %.1f MB (%.1f%%)" 
+                    %(curr_time - start_time, curr_coor[0], curr_coor[1], cpu, mem, mem_percent), end="\r")
+            else:
+                print("Time: %.2f (s), x: %.2f (m), y: %.2f (m)" %(curr_time - start_time, *curr_coor), end="\r")
+
+            collided = gazebo_sim.get_hard_collision()
+            while rospy.get_time() - curr_time < 0.1:
+                time.sleep(0.01)
+        except KeyboardInterrupt:
+            print("Navigation Run Interrupted by User")
+            terminate_ros_proc()
+            sys.exit()
+        except Exception as e:
+            print(f"Error during navigation run: {e}")
+            terminate_ros_proc()
+            sys.exit()
 
 
     
@@ -168,7 +234,7 @@ if __name__ == "__main__":
     ## 3. Report metrics and generate log
     ##########################################################################################
     
-    print(">>>>>>>>>>>>>>>>>> Test finished! <<<<<<<<<<<<<<<<<<")
+    print("\n\n>>>>>>>>>>>>>>>>>> Test finished! <<<<<<<<<<<<<<<<<<")
     success = False
     if collided:
         status = "collided"
@@ -196,11 +262,48 @@ if __name__ == "__main__":
     actual_time = curr_time - start_time
     nav_metric = int(success) * optimal_time / np.clip(actual_time, 2 * optimal_time, 8 * optimal_time)
     print("Navigation metric: %.4f" %(nav_metric))
+    print()
+
+    if args.monitor and cpu_samples:
+        def stats(arr):
+            return {
+                "avg": float(np.mean(arr)),
+                "max": float(np.max(arr)),
+                "min": float(np.min(arr)),
+                "std": float(np.std(arr)),
+            }
+
+        cpu_stats = stats(cpu_samples)
+        mem_stats = stats(mem_samples)
+
+        print("\n>>>>>>>>>>>> Resource Usage Statistics <<<<<<<<<<<<<")
+        print(f"Node monitoring: {args.mnode}")
+        print(f"Samples collected: {len(cpu_samples)}")
+        print("CPU Usage (%):")
+        print("  Avg: %.2f | Max: %.2f | Min: %.2f | Std: %.2f"
+             % (cpu_stats["avg"], cpu_stats["max"],
+                 cpu_stats["min"], cpu_stats["std"]))
+
+        print("Memory Usage (MB):")
+        print("  Avg: %.3f | Max: %.3f | Min: %.3f | Std: %.3f"
+              % (mem_stats["avg"], mem_stats["max"],
+                 mem_stats["min"], mem_stats["std"]))
+        print()
+        with open(args.out, "a") as f:
+            f.write("%d %d %d %d %.4f %.4f %.2f %.2f %.2f %.2f %.3f %.3f %.3f %.3f\n" 
+                    %(args.world_idx, success, collided, 
+                    (curr_time - start_time)>=100, 
+                    curr_time - start_time, nav_metric, 
+                    cpu_stats["avg"], cpu_stats["max"], 
+                    cpu_stats["min"], cpu_stats["std"], 
+                    mem_stats["avg"], mem_stats["max"], 
+                    mem_stats["min"], mem_stats["std"]))
     
-    with open(args.out, "a") as f:
-        f.write("%d %d %d %d %.4f %.4f\n" %(args.world_idx, success, collided, (curr_time - start_time)>=100, curr_time - start_time, nav_metric))
+    else:
+        if args.monitor:
+            print("No samples during resource monitoring, skip resource statistic logs")
     
-    gazebo_process.terminate()
-    gazebo_process.wait()
-    nav_stack_process.terminate()
-    nav_stack_process.wait()
+        with open(args.out, "a") as f:
+            f.write("%d %d %d %d %.4f %.4f\n" %(args.world_idx, success, collided, (curr_time - start_time)>=100, curr_time - start_time, nav_metric))
+   
+    terminate_ros_proc()
