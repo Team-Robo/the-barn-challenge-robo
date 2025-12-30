@@ -62,7 +62,7 @@ if __name__ == "__main__":
             logs = l.split(" ")
             world_idx = int(logs[0])
             optimal_time = get_optimal_time(world_idx)
-            if len(logs) >= 14:  # full resource log
+            if len(logs) >= 10:  # full resource log
                 nav_log = NavLog(
                     world_idx,
                     bool(int(logs[1])),
@@ -72,8 +72,8 @@ if __name__ == "__main__":
                     float(logs[5]),
                     cpu_avg=float(logs[6]),
                     cpu_max=float(logs[7]),
-                    mem_avg=float(logs[10]),
-                    mem_max=float(logs[11])
+                    mem_avg=float(logs[8]),
+                    mem_max=float(logs[9])
                 )
             else:
                 nav_log = NavLog(

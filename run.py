@@ -290,14 +290,12 @@ if __name__ == "__main__":
                  mem_stats["min"], mem_stats["std"]))
         print()
         with open(args.out, "a") as f:
-            f.write("%d %d %d %d %.4f %.4f %.2f %.2f %.2f %.2f %.3f %.3f %.3f %.3f\n" 
+            f.write("%d %d %d %d %.4f %.4f %.2f %.2f %.3f %.3f\n" 
                     %(args.world_idx, success, collided, 
                     (curr_time - start_time)>=100, 
                     curr_time - start_time, nav_metric, 
                     cpu_stats["avg"], cpu_stats["max"], 
-                    cpu_stats["min"], cpu_stats["std"], 
-                    mem_stats["avg"], mem_stats["max"], 
-                    mem_stats["min"], mem_stats["std"]))
+                    mem_stats["avg"], mem_stats["max"])) 
     
     else:
         if args.monitor:
