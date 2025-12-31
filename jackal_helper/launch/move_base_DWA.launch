@@ -15,6 +15,7 @@
     <param name="base_global_planner" type="string" value="navfn/NavfnROS" />
     <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
 
+    <param name="NavfnROS/default_tolerance" value="0.1" />
     <remap from="odom" to="odometry/filtered" />
   </node>
 </launch>
