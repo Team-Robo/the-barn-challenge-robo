@@ -45,7 +45,7 @@ export PATH="/<YOUR_HOME_DIR>/nav_challenge/bin:$PATH"
 
 2. Install Python dependencies
 ```
-pip3 install defusedxml rospkg netifaces numpy psutils
+pip3 install defusedxml rospkg netifaces numpy psutil
 ```
 
 3. Create ROS workspace
