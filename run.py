@@ -17,6 +17,9 @@ from gazebo_simulation import GazeboSimulation
 INIT_POSITION = [-2, 3, 1.57]  # in world frame
 GOAL_POSITION = [0, 10]  # relative to the initial position
 
+rospack = rospkg.RosPack()
+_ROS_PACKAGES = rospack.list()
+
 def compute_distance(p1, p2):
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
 
@@ -73,6 +76,21 @@ def get_nodes_from_yaml(yaml_path):
 
     return sorted(nodes)
 
+def find_ros_file(subdir, filename):
+    matches = []
+    for pkg in _ROS_PACKAGES:
+        pkg_path = rospack.get_path(pkg)
+        candidate = os.path.join(pkg_path, subdir, filename)
+        if os.path.isfile(candidate):
+            matches.append(candidate)
+
+    if not matches:
+        raise FileNotFoundError(f"{subdir}/{filename} not found in any ROS package")
+    if len(matches) > 1:
+        raise RuntimeError(
+            f"Multiple matches found for {filename}:\n" + "\n".join(matches)
+        )
+    return matches[0]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
@@ -116,13 +134,12 @@ if __name__ == "__main__":
         raise ValueError("World index %d does not exist" %args.world_idx)
     
     print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
-    rospack = rospkg.RosPack()
     base_path = rospack.get_path('jackal_helper')
     os.environ['GAZEBO_PLUGIN_PATH'] = os.path.join(base_path, "plugins")
     
     launch_file = join(base_path, 'launch', 'gazebo_launch.launch')
     world_name = join(base_path, "worlds", world_name)
-    rviz_config = join(base_path, "configs", args.rviz_config)
+    rviz_config = find_ros_file("configs", args.rviz_config)
     
     gazebo_process = subprocess.Popen([
         'roslaunch',
@@ -163,7 +180,7 @@ if __name__ == "__main__":
     ## (Customize this block to add your own navigation stack)
     ##########################################################################################
     
-    launch_file = join(base_path, '..', 'jackal_helper/launch/', args.launch)
+    launch_file = find_ros_file("launch", args.launch)
     nav_stack_process = subprocess.Popen([
         'roslaunch',
         launch_file,
