@@ -8,42 +8,52 @@ REPEAT=10         # number of times to run each world
 MAX_IDX=359
 LAUNCH_FILES=()
 MONITOR=false     # resource monitoring flag
+MNODES=()
+MYAML=""
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
         --launch)
-        shift
-        # Collect all non-option arguments as launch files
-        while [[ $# -gt 0 && "$1" != --* ]]; do
-            LAUNCH_FILES+=("$1")
             shift
-        done
-        ;;
+            # Collect all non-option arguments as launch files
+            while [[ $# -gt 0 && "$1" != --* ]]; do
+                LAUNCH_FILES+=("$1")
+                shift
+            done
+            ;;
         --start_idx)
-        START_IDX="$2"
-        shift
-        shift
-        ;;
+            START_IDX="$2"
+            shift 2
+            ;;
         --spacing)
-        SPACING="$2"
-        shift
-        shift
-        ;;
+            SPACING="$2"
+            shift 2
+            ;;
         --repeat)
-        REPEAT="$2"
-        shift
-        shift
-        ;;
-	--monitor)
-        MONITOR=true
-        shift
-        ;;
+            REPEAT="$2"
+            shift 2
+            ;;
+        --monitor)
+            MONITOR=true
+            shift
+            ;;
+        --mnodes)
+            shift
+            while [[ $# -gt 0 && "$1" != --* ]]; do
+                MNODES+=("$1")
+                shift
+            done
+            ;;
+        --myaml)
+            MYAML="$2"
+            shift 2
+            ;;
         *)
-        echo "Unknown option: $1"
-        shift
-        ;;
+            echo "Unknown option: $1"
+            shift
+            ;;
     esac
 done
 
@@ -65,12 +75,28 @@ for LAUNCH in "${LAUNCH_FILES[@]}"; do
 
         for (( j=1; j<=REPEAT; j++ )); do
             echo "Running world index $n, test $j..."
-	    if [ "$MONITOR" = true ]; then
-    		python3 run.py --world_idx $n --launch "$LAUNCH" --monitor
-	    else
-    		python3 run.py --world_idx $n --launch "$LAUNCH"
-	    fi
+
+            # Build the command as an array to handle quoting properly
+            CMD=(python3 run.py --world_idx "$n" --launch "$LAUNCH")
+
+            if [ "$MONITOR" = true ]; then
+                CMD+=(--monitor)
+            fi
+
+            if [ ${#MNODES[@]} -gt 0 ]; then
+                CMD+=(--mnodes "${MNODES[@]}")
+            fi
+
+            if [ -n "$MYAML" ]; then
+                CMD+=(--myaml "$MYAML")
+            fi
+
+            # Run the command
+            "${CMD[@]}"
+
+            # Wait a bit before next run
             sleep 5
         done
     done
 done
+

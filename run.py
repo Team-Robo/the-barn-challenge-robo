@@ -5,6 +5,8 @@ import os
 from os.path import join
 import psutil
 import sys
+import yaml
+import fnmatch
 
 import numpy as np
 import rospy
@@ -40,6 +42,37 @@ def get_rosnode_pid(node_name):
     except Exception:
         return None
 
+def get_nodes_from_yaml(yaml_path):
+    with open(yaml_path, "r") as f:
+        data = yaml.safe_load(f)
+    
+    if not isinstance(data, dict):
+        raise ValueError("YAML file must contain a dictionary")
+	
+    include = data.get("include", None)
+    exclude = data.get("exclude", [])
+
+    out = subprocess.check_output(["rosnode", "list"]).decode()
+    all_nodes = out.splitlines()
+
+    nodes = set()
+
+    if include:
+        # wildcard matching for include
+        for pattern in include:
+            nodes.update(fnmatch.filter(all_nodes, pattern))
+    else:
+        nodes = set(all_nodes)
+
+    # wildcard matching for exclude
+    for pattern in exclude:
+        nodes -= set(fnmatch.filter(all_nodes, pattern))
+
+    if not nodes:
+        raise ValueError("No ROS nodes selected after applying include/exclude rules")
+
+    return sorted(nodes)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
@@ -53,8 +86,10 @@ if __name__ == "__main__":
     parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz", 
                         help="RViz config file in jackal_help/configs to be launched, default common.rviz")
     parser.add_argument('-m', '--monitor', action='store_true', help="Enable resource usage (CPU & Memory) monitoring")
-    parser.add_argument('-mn', '--mnode', type=str, default="/move_base", 
-                        help="ROS node name to monitor resource usage, default /move_base")
+    parser.add_argument('-mn', '--mnodes', nargs='+', default=["/move_base"],
+                        help="List of ROS node names to monitor, e.g. /move_base /amcl /map_server")
+    parser.add_argument('-my', '--myaml', type=str, default=None,
+                        help="Path to YAML file specifying ROS nodes to include/exclude for monitoring")
 
     args = parser.parse_args()
 
@@ -141,20 +176,45 @@ if __name__ == "__main__":
         nav_stack_process.wait()
 
     if args.monitor:
-        move_base_pid = None
+        # If YAML is provided, override mnodes
+        if args.myaml:
+            print(f"Loading monitored nodes from YAML: {args.myaml}")
+            try:
+                time.sleep(3)
+                args.mnodes = get_nodes_from_yaml(args.myaml)
+                print(f"Requested monitor nodes: {args.mnodes}")
+            except Exception as e:
+                print(f"Failed to load YAML node config: {e}, disabling monitoring")
+                args.monitor = False
+                args.mnodes = []
+
+        node_procs = {}
         timeout_start_time = time.time()
-        while move_base_pid is None and not rospy.is_shutdown() and time.time() - timeout_start_time < 5:
-            move_base_pid = get_rosnode_pid(args.mnode)
+
+        while len(node_procs) < len(args.mnodes) and not rospy.is_shutdown():
+            for node in args.mnodes:
+                if node not in node_procs:
+                    pid = get_rosnode_pid(node)
+                    if pid is not None:
+                        proc = psutil.Process(pid)
+                        proc.cpu_percent(interval=None)  # warm-up
+                        node_procs[node] = proc
+            if time.time() - timeout_start_time > 5:
+                break
             time.sleep(0.5)
-        if move_base_pid is None:
-            print(f"Failed to find the pid of node: {args.mnode}, fallback to no resource usage monitoring")
+
+        if not node_procs:
+            print("Failed to find any node PIDs, disabling monitoring")
             args.monitor = False
         else:
-            move_base_proc = psutil.Process(move_base_pid)
-            move_base_proc.cpu_percent(interval=None)  # warm-up
+            if len(node_procs) < len(args.mnodes):
+                print("**The following node PIDs is failed to be found. Hence their resource usage will not be monitoring:")
+                for node in args.mnodes:
+                    if node not in node_procs:
+                        print(f"  - {node}")
             cpu_samples = []
             mem_samples = []
-    
+	
     # Make sure your navigation stack recives the correct goal position defined in GOAL_POSITION
     import actionlib
     from geometry_msgs.msg import Quaternion
@@ -195,7 +255,7 @@ if __name__ == "__main__":
     collided = False
     if args.monitor:
         last_sample_time = rospy.get_time()
-        cpu = mem = mem_percent = 0.0
+        cpu_total = mem_total = 0.0
     
     while compute_distance(goal_coor, curr_coor) > 1 and not collided and curr_time - start_time < 100:
         try:
@@ -205,13 +265,20 @@ if __name__ == "__main__":
             if args.monitor: # resource monitoring in 2hz
                 if rospy.get_time() - last_sample_time >= 0.5:
                     last_sample_time = rospy.get_time()
-                    cpu = move_base_proc.cpu_percent(interval=None)
-                    mem = move_base_proc.memory_info().rss / (1024 * 1024)
-                    mem_percent = move_base_proc.memory_percent()
-                    cpu_samples.append(cpu)
-                    mem_samples.append(mem)
-                print("Time: %.2f (s), x: %.2f (m), y: %.2f (m) | CPU: %.1f%% | MEM: %.1f MB (%.1f%%)" 
-                    %(curr_time - start_time, curr_coor[0], curr_coor[1], cpu, mem, mem_percent), end="\r")
+                    cpu_total = 0.0
+                    mem_total = 0.0
+
+                    for node, proc in node_procs.items():
+                        cpu = proc.cpu_percent(interval=None)
+                        mem = proc.memory_info().rss / (1024 * 1024)
+					
+                        cpu_total += cpu
+                        mem_total += mem
+
+                    cpu_samples.append(cpu_total)
+                    mem_samples.append(mem_total)
+                print("Time: %.2f (s), x: %.2f (m), y: %.2f (m) | CPU: %.1f%% | MEM: %.1f MB" 
+                    %(curr_time - start_time, curr_coor[0], curr_coor[1], cpu_total, mem_total), end="\r")
             else:
                 print("Time: %.2f (s), x: %.2f (m), y: %.2f (m)" %(curr_time - start_time, *curr_coor), end="\r")
 
@@ -277,7 +344,7 @@ if __name__ == "__main__":
         mem_stats = stats(mem_samples)
 
         print("\n>>>>>>>>>>>> Resource Usage Statistics <<<<<<<<<<<<<")
-        print(f"Node monitoring: {args.mnode}")
+        print(f"Node monitoring: {[n for n in node_procs]}")
         print(f"Samples collected: {len(cpu_samples)}")
         print("CPU Usage (%):")
         print("  Avg: %.2f | Max: %.2f | Min: %.2f | Std: %.2f"
