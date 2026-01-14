@@ -147,6 +147,21 @@ python run.py --rviz --rviz_config eband.rviz
 
 > NOTE: default rviz_config file is `common.rviz` matching move_base DWA topic names, minimal edit is required if using other `move_base` plugins, more edit is required for using your own navigation stack developed outside of move_base
 
+## Monitor Resource Usage
+To monitor default move_base node
+```
+python run.py --monitor
+```
+To monitor nodes
+```
+python run.py --monitor --mnodes /move_base /amcl /mpc_node
+```
+To monitor nodes stated in yaml file
+```
+python run.py --monitor --myaml monitor_nodes.yaml
+```
+> Note: When `--myaml` is used, `--mnodes` will be ignored
+
 ## Test script
 
 `benchmark.sh` is a more customizable test script to the original `test.sh`
@@ -156,12 +171,18 @@ Arguments:
 - `start_idx`: starting world index
 - `spacing`: index spacing
 - `repeat`: repeat time for each world index
+  
+(arguments below behave similar to `run.py` argument)
+
+- `monitor`: Enable resource monitoring (CPU & Memory)
+- `mnodes`: List of ROS nodes to monitor (ignored if --myaml is provided)
+- `myaml`: Path to YAML file specifying nodes to monitor
 
 > NOTE: `start_idx` 0 and `spacing` 6 result in testing world index 0, 6, 12, ..., 354, the max world index is 359. The default launch file is `move_base_DWA.launch`, other arguments default value behave like `test.sh`
 
 E.g.
 ```
-./benchmark.sh --launch move_base_DWA.launch move_base_eband.launch --start_idx 0 --spacing 9 --repeat 5
+./benchmark.sh --launch move_base_DWA.launch move_base_eband.launch --start_idx 0 --spacing 9 --repeat 5 --monitor --myaml monitor_nodes.yaml
 ```
 
 ### Test report
