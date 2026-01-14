@@ -1,0 +1,21 @@
+# If only "include" exists → only those nodes are monitored
+# If only "exclude" exists → all nodes except those are monitored
+# If both exist → "include" first, then remove "exclude"
+# If neither exists → error
+
+#include:
+#  - /move_base
+#  - /amcl
+#  - /map_server
+
+exclude:
+  - /rviz
+  - /gazebo
+  - /rosout
+  - /controller_spawner
+  - /collision_publisher_node
+  - /ekf_localization
+  - /robot_state_publisher
+  - /twist_marker_server
+  - /twist_mux
+  - /gym*
