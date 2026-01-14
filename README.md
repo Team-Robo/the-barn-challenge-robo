@@ -1,45 +1,37 @@
+# ICRA BARN Navigation Challenge
+ICRA BARN Navigation Challenge simulation worlds, testing scripts and baseline navigation stack (e.g. DWA, Eband). World Index 0 - 299 are static world, world index 300 - 359 are dynamic world (DynaBarn).
+
+---
+
 ### ***Navigation Stack Test Result:*** 
 upload your benchmark result [here](https://entuedu-my.sharepoint.com/:x:/r/personal/ongd0017_e_ntu_edu_sg/_layouts/15/Doc.aspx?sourcedoc=%7B6FAD4274-1E4D-4E65-AC25-B05687519509%7D&file=Nav%20Stack%20Test%20Result.xlsx&action=default&mobileredirect=true)
 
 ## Table of Contents
 - [Installation](#installation)
-- [Features](#features)
-  - [rviz](#rviz)
-  - [monitor resource usage](#monitor-resource-usage)
-  - [test script](#test-script)
-  - [playground](#playground)
-
---------------------------------------------------------------------------------
-<p align="center">
-  <img width = "100%" src='res/BARN_Challenge.png' />
-  </p>
-
---------------------------------------------------------------------------------
-
-# ICRA BARN Navigation Challenge
-ICRA BARN Navigation Challenge simulation worlds, testing scripts and baseline navigation stack (e.g. DWA, Eband). World Index 0 - 299 are static world, world index 300 - 359 are dynamic world (DynaBarn).
+- [Scripts](#scripts)
+  - [run.py](#runpy)
+  - [benchmark.sh](#benchmarksh)
+  - [report_test.py](#report_testpy)
+  - [playground.py](#playgroundpy)
 
 ## Requirements
 > ⚠️ Please use ROS melodic as ROS noetic is not working for DynaBarn. Replace `<YOUR_ROS_VERSION>` below to `melodic`
 
 If you run it on a local machine without containers:
-* ROS version at least Kinetic
-* CMake version at least 3.0.2
-* Python version at least 3.6
-* Python packages: defusedxml, rospkg, netifaces, numpy
+* ROS Melodic
+* Ubuntu-18.04
 
 If you run it in Singularity containers:
 * Go version at least 1.13
 * Singularity version at least 3.6.3 and less than 4.02
 
-The requirements above are just suggestions. If you run into any issue, please contact organizers for help (zfxu@utexas.edu).
-
 ## Installation
 Follow the instructions below to run simulations on your local machines. (You can skip 1-6 if you only use Singularity container)
+> ⚠️ Singularity container image is outdated please use local machine instead
 
 1. Optionally, create a virtual environment (we show examples with python venv, you can use conda instead)
 ```
-apt -y update; apt-get -y install python3-venv
+sudo apt -y update; sudo apt-get -y install python3-venv
 python3 -m venv /<YOUR_HOME_DIR>/nav_challenge
 export PATH="/<YOUR_HOME_DIR>/nav_challenge/bin:$PATH"
 ```
@@ -137,73 +129,116 @@ Except for `DWA`, we also provide three learning-based navigation stack as examp
 Submit a link that downloads your customized repository to this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSfZLMVluXE-HWnV9lNP00LuBi3e9HFOeLi30p9tsHUViWpqrA/viewform). Your navigation stack will be tested in the Singularity container on 50 hold-out BARN worlds sampled from the same distribution as the 300 BARN worlds. In the repository, make sure the `run.py` runs your navigation stack and `Singularityfile.def` installs all the dependencies of your repo. We suggest to actually build an image and test it with `./singularity_run.sh /path/to/image/file python3 run.py --world_idx 0`. You can also refer to branch `LfH`, `applr` and `e2e`, which are in the correct form for submissions.
 
 --------------------------------------------------------
-# Features
-## Rviz
-Rviz config files for path planning visualization is under `jackal_helper/configs`.
+## Scripts
 
-To visualize a run
-```
-python run.py --rviz --rviz_config eband.rviz
-```
+### run.py
 
-> NOTE: default rviz_config file is `common.rviz` matching move_base DWA topic names, minimal edit is required if using other `move_base` plugins, more edit is required for using your own navigation stack developed outside of move_base
+Runs a single navigation test in Gazebo simulation for a specified world.
 
-## Monitor Resource Usage
-To monitor default move_base node
 ```
-python run.py --monitor
-```
-To monitor nodes
-```
-python run.py --monitor --mnodes /move_base /amcl /mpc_node
-```
-To monitor nodes stated in yaml file
-```
-python run.py --monitor --myaml monitor_nodes.yaml
-```
-> Note: When `--myaml` is used, `--mnodes` will be ignored
+usage: run.py [-h] [-w WORLD_IDX] [-g] [-l LAUNCH] [-o OUT] [-r]
+              [-rc RVIZ_CONFIG] [-m] [-mn MNODES [MNODES ...]] [-my MYAML]
 
-## Test script
+test BARN navigation challenge
 
-`benchmark.sh` is a more customizable test script to the original `test.sh`
-
-Arguments:
-- `launch`: launch file for the navigation stack (can add more than 1)
-- `start_idx`: starting world index
-- `spacing`: index spacing
-- `repeat`: repeat time for each world index
-  
-(arguments below behave similar to `run.py` argument)
-
-- `monitor`: Enable resource monitoring (CPU & Memory)
-- `mnodes`: List of ROS nodes to monitor (ignored if --myaml is provided)
-- `myaml`: Path to YAML file specifying nodes to monitor
-
-> NOTE: `start_idx` 0 and `spacing` 6 result in testing world index 0, 6, 12, ..., 354, the max world index is 359. The default launch file is `move_base_DWA.launch`, other arguments default value behave like `test.sh`
-
-E.g.
-```
-./benchmark.sh --launch move_base_DWA.launch move_base_eband.launch --start_idx 0 --spacing 9 --repeat 5 --monitor --myaml monitor_nodes.yaml
+optional arguments:
+  -h, --help            show this help message and exit
+  -w WORLD_IDX, --world_idx WORLD_IDX
+                        BARN world index to run navigation, default 0
+  -g, --gui             Enable Gazebo GUI
+  -l LAUNCH, --launch LAUNCH
+                        Navigation stack launch file in <ros package>/launch,
+                        default move_base_DWA.launch
+  -o OUT, --out OUT     Path for output logs .txt file, default <--launch>.txt
+  -r, --rviz            Launch RViz
+  -rc RVIZ_CONFIG, --rviz_config RVIZ_CONFIG
+                        RViz config file in <ros package>/configs to be
+                        launched, default common.rviz
+  -m, --monitor         Enable resource usage (CPU & Memory) monitoring
+  -mn MNODES [MNODES ...], --mnodes MNODES [MNODES ...]
+                        List of ROS node names to monitor, e.g. /move_base
+                        /amcl /map_server
+  -my MYAML, --myaml MYAML
+                        Path to YAML file specifying ROS nodes to
+                        include/exclude for monitoring
 ```
 
-### Test report
-`report_test.py` report separate metrics for static and dynamic worlds.
-
-Report test for previous run logs, e.g. `move_base_DWA.launch.txt`
+**Examples:**
 ```
-python report_test.py --out_path move_base_DWA.launch.txt
+# Run test in world 5 
+python3 run.py --world_idx 5
+
+# Run test with custom launch file, with GUI and RViz, with custom rviz configuration file
+# Launch file and rviz configuration file can be located in any ros packages
+# Launch file in <ros_package>/launch, rviz config in <ros_packages>/configs
+# Source the workspace so that it can be found
+python3 run.py --launch move_base_eband.launch --gui --rviz --rviz-config eband.rviz
+
+# Monitor node specified in yaml, checkout `monitor_nodes.yaml` to see its template
+python3 run.py --monitor --myaml monitor_nodes.yaml
 ```
-You can copy and paste your result into [navigation stack test result](#navigation-stack-test-result)
 
-## Playground
+---
 
-Run rviz, gazebo and navigation stack and keep them active to receive goal poses. 
+### benchmark.sh
+
+Runs batch tests across multiple worlds. Tests specified worlds at intervals with multiple repetitions.
+
+**Arguments:**
+- `--launch` (list, default: move_base_DWA.launch) - One or more launch files to test
+- `--start_idx` (int, default: 0) - Starting world index
+- `--spacing` (int, default: 6) - Interval between worlds
+- `--repeat` (int, default: 10) - Repetitions per world
+- `--monitor` (flag) - Enable resource monitoring, similar to run.py argument
+- `--mnodes` (list) - ROS nodes to monitor, similar to run.py argument
+- `--myaml` (str) - YAML file specifying nodes to monitor, similar to run.py argument
+
+**Examples:**
+```
+# Test multiple planners with custom spacing and repititions and monitor resource usage of specified nodes
+./benchmark.sh --launch move_base_DWA.launch move_base_eband.launch --spacing 10 --repeat 5 --monitor --mnodes /move_base /amcl
+
+# General
+./benchmark.sh --launch <nav_launch_file> --start_idx 0 --spacing 4 --repeat 2 --monitor [--mnodes <nodes to monitor> | --myaml monitor_nodes.yaml]
+```
+---
+
+### report_test.py
+
+Analyzes and aggregates test results from log files generated by `run.py`. Outputs statistics for static and dynamic environments.
+
+**Arguments:**
+- `--out_path` (str, required) - Path to output log file from run.py
+
+**Examples:**
+```
+# Generate report
+python3 report_test.py --out_path move_base_DWA.launch.txt
+```
+
+---
+
+### playground.py
+
+Launches an interactive Gazebo simulation with navigation stack for debugging and exploration (no automated goals or metrics).
+
 You can easily set a goal pose in rviz using `2d goal pose` or do it via command line.
-```
-python playground.py --launch move_base_eband.launch --rviz_config eband.rviz
-```
 
-### set goal using command line
+**Arguments:**
+- `--world_idx` (int, default: 0) - BARN world index
+- `--gui` (flag) - Enable Gazebo GUI
+- `--launch` (str, default: move_base_DWA.launch) - Navigation launch file
+- `--rviz_config` (str, default: common.rviz) - RViz config file
+
+**Examples:**
+```
+# Interactive session with GUI
+python3 playground.py --world_idx 0 --gui
+
+# Test custom planner
+python3 playground.py --world_idx 15 --gui --launch move_base_eband.launch
+```
+#### set goal using command line
 Publish goal to topic
 ```
 rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped \
@@ -214,3 +249,4 @@ Using `move_base` action server gui to send goal interactively
 ```
 rosrun actionlib axclient.py /move_base
 ```
+
