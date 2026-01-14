@@ -5,6 +5,7 @@ upload your benchmark result [here](https://entuedu-my.sharepoint.com/:x:/r/pers
 - [Installation](#installation)
 - [Features](#features)
   - [rviz](#rviz)
+  - [monitor resource usage](#monitor-resource-usage)
   - [test script](#test-script)
   - [playground](#playground)
 
@@ -45,7 +46,7 @@ export PATH="/<YOUR_HOME_DIR>/nav_challenge/bin:$PATH"
 
 2. Install Python dependencies
 ```
-pip3 install defusedxml rospkg netifaces numpy psutil
+pip3 install defusedxml rospkg netifaces numpy psutil pyyaml
 ```
 
 3. Create ROS workspace
