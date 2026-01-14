@@ -97,12 +97,12 @@ if __name__ == "__main__":
     parser.add_argument('-w', '--world_idx', type=int, default=0, help="BARN world index to run navigation, default 0")
     parser.add_argument('-g', '--gui', action="store_true", help="Enable Gazebo GUI")
     parser.add_argument('-l', '--launch', type=str, default="move_base_DWA.launch", 
-                        help="Navigation stack launch file in jackal_helper/launch, default move_base_DWA.launch")
+                        help="Navigation stack launch file in <ros package>/launch, default move_base_DWA.launch")
     parser.add_argument('-o', '--out', type=str, default=None, 
                         help="Path for output logs .txt file, default <--launch>.txt")
     parser.add_argument('-r', '--rviz', action='store_true', help="Launch RViz")
     parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz", 
-                        help="RViz config file in jackal_help/configs to be launched, default common.rviz")
+                        help="RViz config file in <ros package>/configs to be launched, default common.rviz")
     parser.add_argument('-m', '--monitor', action='store_true', help="Enable resource usage (CPU & Memory) monitoring")
     parser.add_argument('-mn', '--mnodes', nargs='+', default=["/move_base"],
                         help="List of ROS node names to monitor, e.g. /move_base /amcl /map_server")
