@@ -8,7 +8,7 @@
          <uri>model://sun</uri>
       </include>
 
-    <model name='mediumlibobs_175'>
+    <model name='m2libobs_15'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -61,10 +61,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_175' filename='mediumlibobs_175.so'/>
+      <plugin name='m2libobs_15' filename='m2libobs_15.so'/>
     </model>
 
-    <model name='mediumlibobs_44'>
+    <model name='m2libobs_90'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -117,10 +117,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_44' filename='mediumlibobs_44.so'/>
+      <plugin name='m2libobs_90' filename='m2libobs_90.so'/>
     </model>
 
-    <model name='mediumlibobs_57'>
+    <model name='m2libobs_186'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -173,10 +173,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_57' filename='mediumlibobs_57.so'/>
+      <plugin name='m2libobs_186' filename='m2libobs_186.so'/>
     </model>
 
-    <model name='mediumlibobs_47'>
+    <model name='m2libobs_103'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -229,10 +229,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_47' filename='mediumlibobs_47.so'/>
+      <plugin name='m2libobs_103' filename='m2libobs_103.so'/>
     </model>
 
-    <model name='mediumlibobs_63'>
+    <model name='m2libobs_136'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -285,10 +285,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_63' filename='mediumlibobs_63.so'/>
+      <plugin name='m2libobs_136' filename='m2libobs_136.so'/>
     </model>
 
-    <model name='mediumlibobs_88'>
+    <model name='m2libobs_37'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -341,567 +341,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_88' filename='mediumlibobs_88.so'/>
-    </model>
-
-    <model name='mediumlibobs_137'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_137' filename='mediumlibobs_137.so'/>
-    </model>
-
-    <model name='mediumlibobs_76'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_76' filename='mediumlibobs_76.so'/>
-    </model>
-
-    <model name='mediumlibobs_77'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_77' filename='mediumlibobs_77.so'/>
-    </model>
-
-    <model name='mediumlibobs_122'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_122' filename='mediumlibobs_122.so'/>
-    </model>
-
-    <model name='mediumlibobs_157'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_157' filename='mediumlibobs_157.so'/>
-    </model>
-
-    <model name='mediumlibobs_162'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_162' filename='mediumlibobs_162.so'/>
-    </model>
-
-    <model name='mediumlibobs_45'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_45' filename='mediumlibobs_45.so'/>
-    </model>
-
-    <model name='mediumlibobs_158'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_158' filename='mediumlibobs_158.so'/>
-    </model>
-
-    <model name='mediumlibobs_43'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_43' filename='mediumlibobs_43.so'/>
-    </model>
-
-    <model name='mediumlibobs_165'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_165' filename='mediumlibobs_165.so'/>
+      <plugin name='m2libobs_37' filename='m2libobs_37.so'/>
     </model>
 
       <model name="back_wall">

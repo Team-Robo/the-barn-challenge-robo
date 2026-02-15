@@ -8,7 +8,7 @@
          <uri>model://sun</uri>
       </include>
 
-    <model name='hardlibobs_62'>
+    <model name='hardlibobs_60'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -61,10 +61,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_62' filename='hardlibobs_62.so'/>
+      <plugin name='hardlibobs_60' filename='hardlibobs_60.so'/>
     </model>
 
-    <model name='hardlibobs_97'>
+    <model name='hardlibobs_65'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -117,10 +117,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_97' filename='hardlibobs_97.so'/>
+      <plugin name='hardlibobs_65' filename='hardlibobs_65.so'/>
     </model>
 
-    <model name='hardlibobs_164'>
+    <model name='hardlibobs_94'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -173,10 +173,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_164' filename='hardlibobs_164.so'/>
+      <plugin name='hardlibobs_94' filename='hardlibobs_94.so'/>
     </model>
 
-    <model name='hardlibobs_172'>
+    <model name='hardlibobs_33'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -229,7 +229,119 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_172' filename='hardlibobs_172.so'/>
+      <plugin name='hardlibobs_33' filename='hardlibobs_33.so'/>
+    </model>
+
+    <model name='hardlibobs_95'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='hardlibobs_95' filename='hardlibobs_95.so'/>
+    </model>
+
+    <model name='hardlibobs_194'>
+      <static>1</static>
+      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+           <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+           <geometry>
+            <cylinder>
+                <radius>0.5000</radius>
+                 <length> 1 </length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name='hardlibobs_194' filename='hardlibobs_194.so'/>
     </model>
 
     <model name='hardlibobs_28'>
@@ -288,7 +400,7 @@
       <plugin name='hardlibobs_28' filename='hardlibobs_28.so'/>
     </model>
 
-    <model name='hardlibobs_184'>
+    <model name='hardlibobs_53'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -341,399 +453,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_184' filename='hardlibobs_184.so'/>
-    </model>
-
-    <model name='hardlibobs_123'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_123' filename='hardlibobs_123.so'/>
-    </model>
-
-    <model name='hardlibobs_181'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_181' filename='hardlibobs_181.so'/>
-    </model>
-
-    <model name='hardlibobs_88'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_88' filename='hardlibobs_88.so'/>
-    </model>
-
-    <model name='hardlibobs_23'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_23' filename='hardlibobs_23.so'/>
-    </model>
-
-    <model name='hardlibobs_190'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_190' filename='hardlibobs_190.so'/>
-    </model>
-
-    <model name='hardlibobs_191'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_191' filename='hardlibobs_191.so'/>
-    </model>
-
-    <model name='hardlibobs_24'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_24' filename='hardlibobs_24.so'/>
+      <plugin name='hardlibobs_53' filename='hardlibobs_53.so'/>
     </model>
 
     <model name='hardlibobs_10'>
@@ -792,7 +512,7 @@
       <plugin name='hardlibobs_10' filename='hardlibobs_10.so'/>
     </model>
 
-    <model name='hardlibobs_47'>
+    <model name='hardlibobs_128'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -845,10 +565,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_47' filename='hardlibobs_47.so'/>
+      <plugin name='hardlibobs_128' filename='hardlibobs_128.so'/>
     </model>
 
-    <model name='hardlibobs_127'>
+    <model name='hardlibobs_88'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -901,10 +621,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_127' filename='hardlibobs_127.so'/>
+      <plugin name='hardlibobs_88' filename='hardlibobs_88.so'/>
     </model>
 
-    <model name='hardlibobs_32'>
+    <model name='hardlibobs_86'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -957,10 +677,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_32' filename='hardlibobs_32.so'/>
+      <plugin name='hardlibobs_86' filename='hardlibobs_86.so'/>
     </model>
 
-    <model name='hardlibobs_82'>
+    <model name='hardlibobs_151'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -1013,231 +733,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='hardlibobs_82' filename='hardlibobs_82.so'/>
-    </model>
-
-    <model name='hardlibobs_150'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_150' filename='hardlibobs_150.so'/>
-    </model>
-
-    <model name='hardlibobs_133'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_133' filename='hardlibobs_133.so'/>
-    </model>
-
-    <model name='hardlibobs_148'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_148' filename='hardlibobs_148.so'/>
-    </model>
-
-    <model name='hardlibobs_98'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='hardlibobs_98' filename='hardlibobs_98.so'/>
+      <plugin name='hardlibobs_151' filename='hardlibobs_151.so'/>
     </model>
 
       <model name="back_wall">

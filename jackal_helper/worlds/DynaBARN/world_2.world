@@ -8,7 +8,7 @@
          <uri>model://sun</uri>
       </include>
 
-    <model name='easylibobs_183'>
+    <model name='easylibobs_40'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -61,10 +61,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_183' filename='easylibobs_183.so'/>
+      <plugin name='easylibobs_40' filename='easylibobs_40.so'/>
     </model>
 
-    <model name='easylibobs_126'>
+    <model name='easylibobs_170'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -117,63 +117,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_126' filename='easylibobs_126.so'/>
-    </model>
-
-    <model name='easylibobs_185'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='easylibobs_185' filename='easylibobs_185.so'/>
+      <plugin name='easylibobs_170' filename='easylibobs_170.so'/>
     </model>
 
     <model name='easylibobs_93'>
@@ -232,7 +176,7 @@
       <plugin name='easylibobs_93' filename='easylibobs_93.so'/>
     </model>
 
-    <model name='easylibobs_195'>
+    <model name='easylibobs_74'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -285,10 +229,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_195' filename='easylibobs_195.so'/>
+      <plugin name='easylibobs_74' filename='easylibobs_74.so'/>
     </model>
 
-    <model name='easylibobs_73'>
+    <model name='easylibobs_43'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -341,10 +285,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_73' filename='easylibobs_73.so'/>
+      <plugin name='easylibobs_43' filename='easylibobs_43.so'/>
     </model>
 
-    <model name='easylibobs_193'>
+    <model name='easylibobs_63'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -397,7 +341,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_193' filename='easylibobs_193.so'/>
+      <plugin name='easylibobs_63' filename='easylibobs_63.so'/>
     </model>
 
       <model name="back_wall">

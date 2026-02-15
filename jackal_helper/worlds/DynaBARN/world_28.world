@@ -8,7 +8,7 @@
          <uri>model://sun</uri>
       </include>
 
-    <model name='mediumlibobs_194'>
+    <model name='m1libobs_22'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -61,10 +61,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_194' filename='mediumlibobs_194.so'/>
+      <plugin name='m1libobs_22' filename='m1libobs_22.so'/>
     </model>
 
-    <model name='mediumlibobs_93'>
+    <model name='m1libobs_184'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -117,10 +117,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_93' filename='mediumlibobs_93.so'/>
+      <plugin name='m1libobs_184' filename='m1libobs_184.so'/>
     </model>
 
-    <model name='mediumlibobs_141'>
+    <model name='m1libobs_46'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -173,10 +173,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_141' filename='mediumlibobs_141.so'/>
+      <plugin name='m1libobs_46' filename='m1libobs_46.so'/>
     </model>
 
-    <model name='mediumlibobs_98'>
+    <model name='m1libobs_189'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -229,10 +229,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_98' filename='mediumlibobs_98.so'/>
+      <plugin name='m1libobs_189' filename='m1libobs_189.so'/>
     </model>
 
-    <model name='mediumlibobs_30'>
+    <model name='m1libobs_70'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -285,10 +285,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_30' filename='mediumlibobs_30.so'/>
+      <plugin name='m1libobs_70' filename='m1libobs_70.so'/>
     </model>
 
-    <model name='mediumlibobs_175'>
+    <model name='m1libobs_42'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -341,10 +341,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_175' filename='mediumlibobs_175.so'/>
+      <plugin name='m1libobs_42' filename='m1libobs_42.so'/>
     </model>
 
-    <model name='mediumlibobs_33'>
+    <model name='m1libobs_168'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -397,10 +397,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_33' filename='mediumlibobs_33.so'/>
+      <plugin name='m1libobs_168' filename='m1libobs_168.so'/>
     </model>
 
-    <model name='mediumlibobs_144'>
+    <model name='m1libobs_90'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -453,10 +453,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_144' filename='mediumlibobs_144.so'/>
+      <plugin name='m1libobs_90' filename='m1libobs_90.so'/>
     </model>
 
-    <model name='mediumlibobs_86'>
+    <model name='m1libobs_120'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -509,10 +509,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_86' filename='mediumlibobs_86.so'/>
+      <plugin name='m1libobs_120' filename='m1libobs_120.so'/>
     </model>
 
-    <model name='mediumlibobs_40'>
+    <model name='m1libobs_62'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -565,10 +565,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_40' filename='mediumlibobs_40.so'/>
+      <plugin name='m1libobs_62' filename='m1libobs_62.so'/>
     </model>
 
-    <model name='mediumlibobs_104'>
+    <model name='m1libobs_37'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -621,10 +621,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_104' filename='mediumlibobs_104.so'/>
+      <plugin name='m1libobs_37' filename='m1libobs_37.so'/>
     </model>
 
-    <model name='mediumlibobs_193'>
+    <model name='m1libobs_69'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -677,10 +677,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_193' filename='mediumlibobs_193.so'/>
+      <plugin name='m1libobs_69' filename='m1libobs_69.so'/>
     </model>
 
-    <model name='mediumlibobs_186'>
+    <model name='m1libobs_20'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -733,10 +733,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_186' filename='mediumlibobs_186.so'/>
+      <plugin name='m1libobs_20' filename='m1libobs_20.so'/>
     </model>
 
-    <model name='mediumlibobs_183'>
+    <model name='m1libobs_0'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -789,119 +789,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='mediumlibobs_183' filename='mediumlibobs_183.so'/>
-    </model>
-
-    <model name='mediumlibobs_114'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_114' filename='mediumlibobs_114.so'/>
-    </model>
-
-    <model name='mediumlibobs_138'>
-      <static>1</static>
-      <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-           <geometry>
-            <cylinder>
-                <radius>0.5000</radius>
-                 <length> 1 </length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Red</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <plugin name='mediumlibobs_138' filename='mediumlibobs_138.so'/>
+      <plugin name='m1libobs_0' filename='m1libobs_0.so'/>
     </model>
 
       <model name="back_wall">

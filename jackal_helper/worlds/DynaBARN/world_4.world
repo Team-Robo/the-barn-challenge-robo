@@ -8,7 +8,7 @@
          <uri>model://sun</uri>
       </include>
 
-    <model name='easylibobs_92'>
+    <model name='easylibobs_100'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -61,10 +61,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_92' filename='easylibobs_92.so'/>
+      <plugin name='easylibobs_100' filename='easylibobs_100.so'/>
     </model>
 
-    <model name='easylibobs_64'>
+    <model name='easylibobs_34'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -117,10 +117,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_64' filename='easylibobs_64.so'/>
+      <plugin name='easylibobs_34' filename='easylibobs_34.so'/>
     </model>
 
-    <model name='easylibobs_197'>
+    <model name='easylibobs_17'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -173,10 +173,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_197' filename='easylibobs_197.so'/>
+      <plugin name='easylibobs_17' filename='easylibobs_17.so'/>
     </model>
 
-    <model name='easylibobs_129'>
+    <model name='easylibobs_61'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -229,10 +229,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_129' filename='easylibobs_129.so'/>
+      <plugin name='easylibobs_61' filename='easylibobs_61.so'/>
     </model>
 
-    <model name='easylibobs_72'>
+    <model name='easylibobs_76'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -285,10 +285,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_72' filename='easylibobs_72.so'/>
+      <plugin name='easylibobs_76' filename='easylibobs_76.so'/>
     </model>
 
-    <model name='easylibobs_62'>
+    <model name='easylibobs_149'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -341,10 +341,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_62' filename='easylibobs_62.so'/>
+      <plugin name='easylibobs_149' filename='easylibobs_149.so'/>
     </model>
 
-    <model name='easylibobs_106'>
+    <model name='easylibobs_47'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -397,10 +397,10 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_106' filename='easylibobs_106.so'/>
+      <plugin name='easylibobs_47' filename='easylibobs_47.so'/>
     </model>
 
-    <model name='easylibobs_132'>
+    <model name='easylibobs_40'>
       <static>1</static>
       <pose frame=''>-0.225000 0.075000 0.000000 0.000000 0.000000 0.000000</pose>
       <link name='link'>
@@ -453,7 +453,7 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <plugin name='easylibobs_132' filename='easylibobs_132.so'/>
+      <plugin name='easylibobs_40' filename='easylibobs_40.so'/>
     </model>
 
       <model name="back_wall">

@@ -64,7 +64,30 @@ rosdep init; rosdep update --rosdistro <YOUR_ROS_VERSION>
 rosdep install -y --from-paths . --ignore-src --rosdistro=<YOUR_ROS_VERSION>
 ```
 
-6. Build the workspace (if `catkin_make` fails, try changing `-std=c++11` to `-std=c++17` in `jackal_helper/CMakeLists.txt` line 3)
+7. Fix robot_localization IMU Config (if localization drift occurs)
+Edit `jackal/jackal_control/config/robot_localization.yaml` and update the `imu0_config` block:
+
+**Before:**
+```yaml
+imu0: /imu/data
+imu0_config: [false, false, false,
+              true, true, false,
+              false, false, false,
+              true, true, true,
+              false, false, false]
+```
+
+**After:**
+```yaml
+imu0: /imu/data
+imu0_config: [false, false, false,
+              true, true, true,
+              false, false, false,
+              true, true, true,
+              false, false, false]
+```
+
+8. Build the workspace (if `catkin_make` fails, try changing `-std=c++11` to `-std=c++17` in `jackal_helper/CMakeLists.txt` line 3)
 ```
 catkin_make
 source devel/setup.bash
