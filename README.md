@@ -18,8 +18,8 @@ upload your benchmark result [here](https://entuedu-my.sharepoint.com/:x:/r/pers
 > ⚠️ Please use ROS melodic as ROS noetic is not working for DynaBarn. Replace `<YOUR_ROS_VERSION>` below to `melodic`
 
 If you run it on a local machine without containers:
-* ROS Melodic
-* Ubuntu-18.04
+* ROS Melodic/ROS Noetic
+* Ubuntu-18.04/Ubuntu-20.04
 
 If you run it in Singularity containers:
 * Go version at least 1.13
@@ -32,8 +32,8 @@ Follow the instructions below to run simulations on your local machines. (You ca
 1. Optionally, create a virtual environment (we show examples with python venv, you can use conda instead)
 ```
 sudo apt -y update; sudo apt-get -y install python3-venv
-python3 -m venv /<YOUR_HOME_DIR>/nav_challenge
-export PATH="/<YOUR_HOME_DIR>/nav_challenge/bin:$PATH"
+python3 -m venv ~/nav_challenge
+export PATH="~/nav_challenge/bin:$PATH"
 ```
 
 2. Install Python dependencies
@@ -43,16 +43,27 @@ pip3 install defusedxml rospkg netifaces numpy psutil pyyaml
 
 3. Create ROS workspace
 ```
-mkdir -p /<YOUR_HOME_DIR>/jackal_ws/src
-cd /<YOUR_HOME_DIR>/jackal_ws/src
+mkdir -p ~/jackal_ws/src
+cd ~/jackal_ws/src
 ```
 
-4. Clone this repo and required ros packages: (replace `<YOUR_ROS_VERSION>` with your own, e.g. melodic)
+4. Clone this repo and required ros packages:
+
+For ROS Melodic
 ```
 git clone https://github.com/Team-Robo/the-barn-challenge-robo.git
-git clone https://github.com/jackal/jackal.git --branch <YOUR_ROS_VERSION>-devel
-git clone https://github.com/jackal/jackal_simulator.git --branch <YOUR_ROS_VERSION>-devel
-git clone https://github.com/jackal/jackal_desktop.git --branch <YOUR_ROS_VERSION>-devel
+git clone https://github.com/jackal/jackal.git --branch melodic-devel
+git clone https://github.com/jackal/jackal_simulator.git --branch melodic-devel
+git clone https://github.com/jackal/jackal_desktop.git --branch melodic-devel
+git clone https://github.com/utexas-bwi/eband_local_planner.git
+```
+
+For ROS Noetic
+```
+git clone https://github.com/Team-Robo/the-barn-challenge-robo.git
+git clone https://github.com/Team-Robo/jackal.git
+git clone https://github.com/jackal/jackal_simulator.git --branch melodic-devel
+git clone https://github.com/jackal/jackal_desktop.git --branch melodic-devel
 git clone https://github.com/utexas-bwi/eband_local_planner.git
 ```
 
@@ -64,7 +75,7 @@ rosdep init; rosdep update --rosdistro <YOUR_ROS_VERSION>
 rosdep install -y --from-paths . --ignore-src --rosdistro=<YOUR_ROS_VERSION>
 ```
 
-6. Build the workspace (if `catkin_make` fails, try changing `-std=c++11` to `-std=c++17` in `jackal_helper/CMakeLists.txt` line 3)
+6. Build the workspace
 ```
 catkin_make
 source devel/setup.bash
