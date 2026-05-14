@@ -7,6 +7,8 @@ import psutil
 import sys
 import yaml
 import fnmatch
+import signal
+import atexit
 
 import numpy as np
 import rospy
@@ -19,6 +21,8 @@ GOAL_POSITION = [0, 10]  # relative to the initial position
 
 rospack = rospkg.RosPack()
 _ROS_PACKAGES = rospack.list()
+
+processes = []
 
 def compute_distance(p1, p2):
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
@@ -92,16 +96,40 @@ def find_ros_file(subdir, filename):
         )
     return matches[0]
 
+def terminate_ros_proc():
+    for process in processes:
+        if process.poll() is None:
+            process.terminate()
+            process.wait()
+
+def shutdown_handler(signum, frame):
+    print("\n[Shutdown] Caught signal, terminating all subprocesses...")
+
+    for process in processes:
+        if process.poll() is None:  # still running
+            print(f"[Shutdown] Terminating: {process.args}")
+            process.terminate()
+            try:
+                # Wait indefinitely for the process to exit
+                process.wait()
+                print(f"[Shutdown] {process.args} exited cleanly.")
+            except Exception as e:
+                print(f"[Error] Waiting for process {process.args} failed: {e}")
+
+    rospy.signal_shutdown("User interrupt")
+    print("[Shutdown] All subprocesses have exited. ROS node shutting down.")
+    sys.exit(0)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
     parser.add_argument('-w', '--world_idx', type=int, default=0, help="BARN world index to run navigation, default 0")
     parser.add_argument('-g', '--gui', action="store_true", help="Enable Gazebo GUI")
-    parser.add_argument('-l', '--launch', type=str, default="move_base_DWA.launch", 
+    parser.add_argument('-l', '--launch', type=str, default="move_base_DWA.launch",
                         help="Navigation stack launch file in <ros package>/launch, default move_base_DWA.launch")
     parser.add_argument('-o', '--out', type=str, default=None, 
                         help="Path for output logs .txt file, default <--launch>.txt")
     parser.add_argument('-r', '--rviz', action='store_true', help="Launch RViz")
-    parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz", 
+    parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz",
                         help="RViz config file in <ros package>/configs to be launched, default common.rviz")
     parser.add_argument('-m', '--monitor', action='store_true', help="Enable resource usage (CPU & Memory) monitoring")
     parser.add_argument('-mn', '--mnodes', nargs='+', default=["/move_base"],
@@ -113,7 +141,11 @@ if __name__ == "__main__":
 
     if args.out is None:
         args.out = args.launch + ".txt"
-    
+
+    signal.signal(signal.SIGINT, shutdown_handler)
+    signal.signal(signal.SIGTERM, shutdown_handler)
+    atexit.register(terminate_ros_proc)
+
     ##########################################################################################
     ## 0. Launch Gazebo Simulation
     ##########################################################################################
@@ -133,13 +165,14 @@ if __name__ == "__main__":
     else:
         raise ValueError("World index %d does not exist" %args.world_idx)
     
-    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
+    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))
     base_path = rospack.get_path('jackal_helper')
     os.environ['GAZEBO_PLUGIN_PATH'] = os.path.join(base_path, "plugins")
-    
+
     launch_file = join(base_path, 'launch', 'gazebo_launch.launch')
     world_name = join(base_path, "worlds", world_name)
     rviz_config = find_ros_file("configs", args.rviz_config)
+    nav_launch_file = find_ros_file("launch", args.launch)
     
     gazebo_process = subprocess.Popen([
         'roslaunch',
@@ -149,6 +182,7 @@ if __name__ == "__main__":
         'rviz:=' + ("true" if args.rviz else "false"),
         'rviz_config:=' + rviz_config
     ])
+    processes.append(gazebo_process)
     time.sleep(5)  # sleep to wait until the gazebo being created
     
     rospy.init_node('gym', anonymous=True) #, log_level=rospy.FATAL)
@@ -180,17 +214,11 @@ if __name__ == "__main__":
     ## (Customize this block to add your own navigation stack)
     ##########################################################################################
     
-    launch_file = find_ros_file("launch", args.launch)
     nav_stack_process = subprocess.Popen([
         'roslaunch',
-        launch_file,
+        nav_launch_file,
     ])
-
-    def terminate_ros_proc():
-        gazebo_process.terminate()
-        gazebo_process.wait()
-        nav_stack_process.terminate()
-        nav_stack_process.wait()
+    processes.append(nav_stack_process)
 
     if args.monitor:
         # If YAML is provided, override mnodes
@@ -302,10 +330,6 @@ if __name__ == "__main__":
             collided = gazebo_sim.get_hard_collision()
             while rospy.get_time() - curr_time < 0.1:
                 time.sleep(0.01)
-        except KeyboardInterrupt:
-            print("Navigation Run Interrupted by User")
-            terminate_ros_proc()
-            sys.exit()
         except Exception as e:
             print(f"Error during navigation run: {e}")
             terminate_ros_proc()

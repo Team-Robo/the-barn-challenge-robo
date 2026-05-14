@@ -222,13 +222,25 @@ python3 report_test.py --out_path move_base_DWA.launch.txt
 
 Launches an interactive Gazebo simulation with navigation stack for debugging and exploration (no automated goals or metrics).
 
-You can easily set a goal pose in rviz using `2d goal pose` or do it via command line.
+You can easily set a goal pose in rviz using `2d goal pose` or do it via [command line](#send-goal-using-command-line)/[GUI](#send-goal-using-gui).
 
-**Arguments:**
-- `--world_idx` (int, default: 0) - BARN world index
-- `--gui` (flag) - Enable Gazebo GUI
-- `--launch` (str, default: move_base_DWA.launch) - Navigation launch file
-- `--rviz_config` (str, default: common.rviz) - RViz config file
+```
+usage: playground.py [-h] [-w WORLD_IDX] [-g] [-l LAUNCH] [-rc RVIZ_CONFIG]
+
+test BARN navigation challenge
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -w WORLD_IDX, --world_idx WORLD_IDX
+                        BARN world index to run navigation, default 0
+  -g, --gui             Enable Gazebo GUI
+  -l LAUNCH, --launch LAUNCH
+                        Navigation stack launch file in <ros package>/launch,
+                        default move_base_DWA.launch
+  -rc RVIZ_CONFIG, --rviz_config RVIZ_CONFIG
+                        RViz config file in <ros package>/configs to be
+                        launched, default common.rviz
+```
 
 **Examples:**
 ```
@@ -238,13 +250,14 @@ python3 playground.py --world_idx 0 --gui
 # Test custom planner
 python3 playground.py --world_idx 15 --gui --launch move_base_eband.launch
 ```
-#### set goal using command line
+#### Send goal using command line
 Publish goal to topic
 ```
 rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped \
 'header: {frame_id: "odom"} pose: {position: {x: 2.0, y: 3.0, z: 0.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}'
-
 ```
+
+#### Send goal using GUI
 Using `move_base` action server gui to send goal interactively
 ```
 rosrun actionlib axclient.py /move_base

@@ -3,14 +3,20 @@ import argparse
 import subprocess
 import os
 from os.path import join
+import sys
+import signal
+import atexit
 
 import numpy as np
 import rospy
 import rospkg
-import sys
 
 from gazebo_simulation import GazeboSimulation
-import signal
+
+rospack = rospkg.RosPack()
+_ROS_PACKAGES = rospack.list()
+
+processes = []
 
 def compute_distance(p1, p2):
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
@@ -25,7 +31,27 @@ def path_coord_to_gazebo_coord(x, y):
 
         return (gazebo_x, gazebo_y)
 
-processes = []
+def find_ros_file(subdir, filename):
+    matches = []
+    for pkg in _ROS_PACKAGES:
+        pkg_path = rospack.get_path(pkg)
+        candidate = os.path.join(pkg_path, subdir, filename)
+        if os.path.isfile(candidate):
+            matches.append(candidate)
+
+    if not matches:
+        raise FileNotFoundError(f"{subdir}/{filename} not found in any ROS package")
+    if len(matches) > 1:
+        raise RuntimeError(
+            f"Multiple matches found for {filename}:\n" + "\n".join(matches)
+        )
+    return matches[0]
+
+def terminate_ros_proc():
+    for process in processes:
+        if process.poll() is None:
+            process.terminate()
+            process.wait()
 
 def shutdown_handler(signum, frame):
     print("\n[Shutdown] Caught signal, terminating all subprocesses...")
@@ -47,19 +73,18 @@ def shutdown_handler(signum, frame):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'test BARN navigation challenge')
-    parser.add_argument('--world_idx', type=int, default=0)
-    parser.add_argument('--gui', action="store_true")
-    parser.add_argument('--launch', type=str, default="move_base_DWA.launch")
-    parser.add_argument('--rviz_config', type=str, default="common.rviz")
+    parser.add_argument('-w', '--world_idx', type=int, default=0, help="BARN world index to run navigation, default 0")
+    parser.add_argument('-g', '--gui', action="store_true", help="Enable Gazebo GUI")
+    parser.add_argument('-l', '--launch', type=str, default="move_base_DWA.launch",
+                        help="Navigation stack launch file in <ros package>/launch, default move_base_DWA.launch")
+    parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz",
+                        help="RViz config file in <ros package>/configs to be launched, default common.rviz")
 
     args = parser.parse_args()
 
-    #if args.out is None:
-    #    args.out = args.launch + ".txt"
-
-    # Register signal handler
     signal.signal(signal.SIGINT, shutdown_handler)
     signal.signal(signal.SIGTERM, shutdown_handler)
+    atexit.register(terminate_ros_proc)
 
     ##########################################################################################
     ## 0. Launch Gazebo Simulation
@@ -80,14 +105,14 @@ if __name__ == "__main__":
     else:
         raise ValueError("World index %d does not exist" %args.world_idx)
     
-    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))   
-    rospack = rospkg.RosPack()
+    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))
     base_path = rospack.get_path('jackal_helper')
     os.environ['GAZEBO_PLUGIN_PATH'] = os.path.join(base_path, "plugins")
-    
+
     launch_file = join(base_path, 'launch', 'gazebo_launch.launch')
     world_name = join(base_path, "worlds", world_name)
-    rviz_config = join(base_path, "configs", args.rviz_config)
+    rviz_config = find_ros_file("configs", args.rviz_config)
+    nav_launch_file = find_ros_file("launch", args.launch)
     
     gazebo_process = subprocess.Popen([
         'roslaunch',
@@ -129,10 +154,9 @@ if __name__ == "__main__":
     ## (Customize this block to add your own navigation stack)
     ##########################################################################################
     
-    launch_file = join(base_path, '..', 'jackal_helper/launch/', args.launch)
     nav_stack_process = subprocess.Popen([
         'roslaunch',
-        launch_file,
+        nav_launch_file,
     ])
     processes.append(nav_stack_process)
     
