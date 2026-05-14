@@ -15,7 +15,7 @@ upload your benchmark result [here](https://entuedu-my.sharepoint.com/:x:/r/pers
   - [playground.py](#playgroundpy)
 
 ## Requirements
-> ⚠️ Please use ROS melodic as ROS noetic is not working for DynaBarn. Replace `<YOUR_ROS_VERSION>` below to `melodic`
+> ⚠️ The DynaBarn plugin in main branch of this repo only works on ROS melodic. For ROS noetic, use [this branch](https://github.com/Team-Robo/the-barn-challenge-robo/tree/noetic-plugins-imu-fix)
 
 If you run it on a local machine without containers:
 * ROS Melodic/ROS Noetic
