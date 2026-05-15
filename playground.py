@@ -67,7 +67,10 @@ def shutdown_handler(signum, frame):
             except Exception as e:
                 print(f"[Error] Waiting for process {process.args} failed: {e}")
 
-    rospy.signal_shutdown("User interrupt")
+    try:
+        rospy.signal_shutdown("User interrupt")
+    except Exception:
+        pass
     print("[Shutdown] All subprocesses have exited. ROS node shutting down.")
     sys.exit(0)
 
@@ -79,6 +82,8 @@ if __name__ == "__main__":
                         help="Navigation stack launch file in <ros package>/launch, default move_base_DWA.launch")
     parser.add_argument('-rc', '--rviz_config', type=str, default="common.rviz",
                         help="RViz config file in <ros package>/configs to be launched, default common.rviz")
+    parser.add_argument('-p', '--physical', action="store_true",
+                        help="Launch only navigation + RViz for a physical Jackal (skip Gazebo)")
 
     args = parser.parse_args()
 
@@ -86,79 +91,94 @@ if __name__ == "__main__":
     signal.signal(signal.SIGTERM, shutdown_handler)
     atexit.register(terminate_ros_proc)
 
-    ##########################################################################################
-    ## 0. Launch Gazebo Simulation
-    ##########################################################################################
-    
-    os.environ["JACKAL_LASER"] = "1"
-    os.environ["JACKAL_LASER_MODEL"] = "ust10"
-    os.environ["JACKAL_LASER_OFFSET"] = "-0.065 0 0.01"
-    
-    if args.world_idx < 300:  # static environment from 0-299
-        world_name = "BARN/world_%d.world" %(args.world_idx)
-        INIT_POSITION = [-2.25, 3, 1.57]  # in world frame
-        #GOAL_POSITION = [0, 10]  # relative to the initial position
-    elif args.world_idx < 360:  # Dynamic environment from 300-359
-        world_name = "DynaBARN/world_%d.world" %(args.world_idx - 300)
-        INIT_POSITION = [11, 0, 3.14]  # in world frame
-        #GOAL_POSITION = [-20, 0]  # relative to the initial position
-    else:
-        raise ValueError("World index %d does not exist" %args.world_idx)
-    
-    print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<" %(world_name))
-    base_path = rospack.get_path('jackal_helper')
-    os.environ['GAZEBO_PLUGIN_PATH'] = os.path.join(base_path, "plugins")
-
-    launch_file = join(base_path, 'launch', 'gazebo_launch.launch')
-    world_name = join(base_path, "worlds", world_name)
     rviz_config = find_ros_file("configs", args.rviz_config)
     nav_launch_file = find_ros_file("launch", args.launch)
-    
-    gazebo_process = subprocess.Popen([
-        'roslaunch',
-        launch_file,
-        'world_name:=' + world_name,
-        'gui:=' + ("true" if args.gui else "false"),
-        'rviz:=true',
-        'rviz_config:=' + rviz_config
-    ])
-    processes.append(gazebo_process)
-    time.sleep(5)  # sleep to wait until the gazebo being created
-    
-    rospy.init_node('playground', anonymous=True) #, log_level=rospy.FATAL)
-    rospy.set_param('/use_sim_time', True)
-    
-    # GazeboSimulation provides useful interface to communicate with gazebo  
-    gazebo_sim = GazeboSimulation(init_position=INIT_POSITION)
-    
-    init_coor = (INIT_POSITION[0], INIT_POSITION[1])
-    #goal_coor = (INIT_POSITION[0] + GOAL_POSITION[0], INIT_POSITION[1] + GOAL_POSITION[1])
-    
-    pos = gazebo_sim.get_model_state().pose.position
-    curr_coor = (pos.x, pos.y)
-    collided = True
-    
-    # check whether the robot is reset, the collision is False
-    while compute_distance(init_coor, curr_coor) > 0.1 or collided:
-        gazebo_sim.reset() # Reset to the initial position
+
+    if args.physical:
+        nav_stack_process = subprocess.Popen([
+            'roslaunch',
+            nav_launch_file,
+        ])
+        processes.append(nav_stack_process)
+
+        rviz_process = subprocess.Popen([
+            'rviz',
+            '-d',
+            rviz_config,
+        ])
+        processes.append(rviz_process)
+    else:
+        ##########################################################################################
+        ## 0. Launch Gazebo Simulation
+        ##########################################################################################
+        
+        os.environ["JACKAL_LASER"] = "1"
+        os.environ["JACKAL_LASER_MODEL"] = "ust10"
+        os.environ["JACKAL_LASER_OFFSET"] = "-0.065 0 0.01"
+        
+        if args.world_idx < 300:  # static environment from 0-299
+            world_name = "BARN/world_%d.world" %(args.world_idx)
+            INIT_POSITION = [-2.25, 3, 1.57]  # in world frame
+            #GOAL_POSITION = [0, 10]  # relative to the initial position
+        elif args.world_idx < 360:  # Dynamic environment from 300-359
+            world_name = "DynaBARN/world_%d.world" %(args.world_idx - 300)
+            INIT_POSITION = [11, 0, 3.14]  # in world frame
+            #GOAL_POSITION = [-20, 0]  # relative to the initial position
+        else:
+            raise ValueError("World index %d does not exist" %args.world_idx)
+        
+        print(">>>>>>>>>>>>>>>>>> Loading Gazebo Simulation with %s <<<<<<<<<<<<<<<<<<<" %(world_name))
+        base_path = rospack.get_path('jackal_helper')
+        os.environ['GAZEBO_PLUGIN_PATH'] = os.path.join(base_path, "plugins")
+
+        launch_file = join(base_path, 'launch', 'gazebo_launch.launch')
+        world_name = join(base_path, "worlds", world_name)
+        
+        gazebo_process = subprocess.Popen([
+            'roslaunch',
+            launch_file,
+            'world_name:=' + world_name,
+            'gui:=' + ("true" if args.gui else "false"),
+            'rviz:=true',
+            'rviz_config:=' + rviz_config
+        ])
+        processes.append(gazebo_process)
+        time.sleep(5)  # sleep to wait until the gazebo being created
+        
+        rospy.init_node('playground', anonymous=True) #, log_level=rospy.FATAL)
+        rospy.set_param('/use_sim_time', True)
+        
+        # GazeboSimulation provides useful interface to communicate with gazebo  
+        gazebo_sim = GazeboSimulation(init_position=INIT_POSITION)
+        
+        init_coor = (INIT_POSITION[0], INIT_POSITION[1])
+        #goal_coor = (INIT_POSITION[0] + GOAL_POSITION[0], INIT_POSITION[1] + GOAL_POSITION[1])
+        
         pos = gazebo_sim.get_model_state().pose.position
         curr_coor = (pos.x, pos.y)
-        collided = gazebo_sim.get_hard_collision()
-        time.sleep(1)
+        collided = True
+        
+        # check whether the robot is reset, the collision is False
+        while compute_distance(init_coor, curr_coor) > 0.1 or collided:
+            gazebo_sim.reset() # Reset to the initial position
+            pos = gazebo_sim.get_model_state().pose.position
+            curr_coor = (pos.x, pos.y)
+            collided = gazebo_sim.get_hard_collision()
+            time.sleep(1)
 
 
 
 
-    ##########################################################################################
-    ## 1. Launch your navigation stack
-    ## (Customize this block to add your own navigation stack)
-    ##########################################################################################
-    
-    nav_stack_process = subprocess.Popen([
-        'roslaunch',
-        nav_launch_file,
-    ])
-    processes.append(nav_stack_process)
+        ##########################################################################################
+        ## 1. Launch your navigation stack
+        ## (Customize this block to add your own navigation stack)
+        ##########################################################################################
+        
+        nav_stack_process = subprocess.Popen([
+            'roslaunch',
+            nav_launch_file,
+        ])
+        processes.append(nav_stack_process)
     
     
     # Wait indefinitely (keep script alive)

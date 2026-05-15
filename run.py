@@ -116,7 +116,10 @@ def shutdown_handler(signum, frame):
             except Exception as e:
                 print(f"[Error] Waiting for process {process.args} failed: {e}")
 
-    rospy.signal_shutdown("User interrupt")
+    try:
+        rospy.signal_shutdown("User interrupt")
+    except Exception:
+        pass
     print("[Shutdown] All subprocesses have exited. ROS node shutting down.")
     sys.exit(0)
 
